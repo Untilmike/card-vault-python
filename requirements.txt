@@ -3,3 +3,4 @@ pymysql
 pycryptodome
 python-dotenv
 gunicorn
+cryptography
