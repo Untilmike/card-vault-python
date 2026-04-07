@@ -1,0 +1,49 @@
+﻿{% extends 'base.html' %}
+{% block content %}
+<h2>🧾 Invoice History</h2>
+<div style="margin-bottom:16px">
+  {% if session.role in ['admin','merchant'] %}
+  <a href="/invoices/create" class="btn btn-g">+ New Invoice</a>
+  {% endif %}
+</div>
+<table>
+  <tr>
+    <th>Invoice #</th><th>Customer</th><th>Card</th>
+    <th>Amount (KES)</th><th>Status</th><th>Date</th>
+    {% if session.role in ['admin','merchant'] %}<th>Action</th>{% endif %}
+  </tr>
+  {% for inv in invoices %}
+  {% set bc = 'b-g' if inv.status=='paid' else ('b-y' if inv.status=='pending' else 'b-r') %}
+  <tr>
+    <td><strong>#{{ inv.invoice_id }}</strong></td>
+    <td>{{ inv.customer }}</td>
+    <td>{{ inv.card_type }} &bull;&bull;&bull;&bull; {{ inv.last_four }}</td>
+    <td><strong>{{ "%.2f"|format(inv.amount) }}</strong></td>
+    <td><span class="badge {{ bc }}">{{ inv.status }}</span></td>
+    <td>{{ inv.created_at.strftime('%d %b %Y') }}</td>
+    {% if session.role in ['admin','merchant'] %}
+    <td>
+      {% if inv.status == 'pending' %}
+      <a href="/invoices/update?id={{ inv.invoice_id }}&status=paid"
+         class="btn btn-g" style="font-size:12px;padding:4px 8px"
+         onclick="return confirm('Mark invoice #{{ inv.invoice_id }} as paid?')">
+         Paid
+      </a>
+      <a href="/invoices/update?id={{ inv.invoice_id }}&status=failed"
+         class="btn btn-r" style="font-size:12px;padding:4px 8px"
+         onclick="return confirm('Mark as failed?')">
+         Failed
+      </a>
+      {% else %}&mdash;{% endif %}
+    </td>
+    {% endif %}
+  </tr>
+  {% else %}
+  <tr>
+    <td colspan="7" style="text-align:center;color:#999;padding:24px">
+      No invoices yet.
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

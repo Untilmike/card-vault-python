@@ -1,0 +1,55 @@
+﻿{% extends 'base.html' %}
+{% block content %}
+<h2>Dashboard</h2>
+<p style="color:#666;margin-bottom:24px">
+  Welcome back, <strong>{{ session.username }}</strong>.
+  You are logged in as <strong>{{ session.role }}</strong>.
+</p>
+
+<div class="info-box">
+  <h3>Data Classification — Access Level: {{ session.role }}</h3>
+  <table>
+    <tr><th>Classification</th><th>Fields</th><th>Protection</th></tr>
+    <tr><td>Public</td><td>Customer name, email, phone</td><td>No encryption</td></tr>
+    <tr><td>Confidential</td><td>Card type, last 4 digits, expiry</td><td>AES Encrypted</td></tr>
+    <tr><td>Sensitive</td><td>Full card number, CVV, billing address</td><td>AES Encrypted</td></tr>
+  </table>
+</div>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px">
+  {% if session.role in ['admin','merchant'] %}
+  <a href="/customers" style="text-decoration:none">
+    <div style="background:#fff;padding:24px;border-radius:8px;
+                box-shadow:0 2px 6px rgba(0,0,0,.08);text-align:center">
+      <div style="font-size:30px">👤</div>
+      <div style="margin-top:8px;font-weight:bold;color:#4a235a ">Customers</div>
+      <div style="font-size:12px;color:#888;margin-top:4px">Public info</div>
+    </div></a>
+  <a href="/cards" style="text-decoration:none">
+    <div style="background:#fff;padding:24px;border-radius:8px;
+                box-shadow:0 2px 6px rgba(0,0,0,.08);text-align:center">
+      <div style="font-size:30px">💳</div>
+      <div style="margin-top:8px;font-weight:bold;color:#4a235a ">Cards</div>
+      <div style="font-size:12px;color:#888;margin-top:4px">Encrypted vault</div>
+    </div></a>
+  {% endif %}
+  {% if session.role in ['admin','merchant','cashier'] %}
+  <a href="/invoices" style="text-decoration:none">
+    <div style="background:#fff;padding:24px;border-radius:8px;
+                box-shadow:0 2px 6px rgba(0,0,0,.08);text-align:center">
+      <div style="font-size:30px">🧾</div>
+      <div style="margin-top:8px;font-weight:bold;color:#4a235a ">Invoices</div>
+      <div style="font-size:12px;color:#888;margin-top:4px">Billing records</div>
+    </div></a>
+  {% endif %}
+  {% if session.role in ['admin','auditor'] %}
+  <a href="/audit" style="text-decoration:none">
+    <div style="background:#fff;padding:24px;border-radius:8px;
+                box-shadow:0 2px 6px rgba(0,0,0,.08);text-align:center">
+      <div style="font-size:30px">🔍</div>
+      <div style="margin-top:8px;font-weight:bold;color:#4a235a ">Audit Log</div>
+      <div style="font-size:12px;color:#888;margin-top:4px">All activity</div>
+    </div></a>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,39 @@
+﻿{% extends 'base.html' %}
+{% block content %}
+<h2>💳 Add Credit Card</h2>
+<div class="form-box">
+  <p style="font-size:13px;color:#888;margin-bottom:18px">
+    Card details are <strong>sensitive/confidential</strong> —
+    all fields below are encrypted using AES before storing.
+  </p>
+  <form method="POST">
+    <label>Customer</label>
+    <select name="customer_id" required>
+      <option value="">-- Select Customer --</option>
+      {% for c in customers %}
+      <option value="{{ c.customer_id }}"
+        {{ 'selected' if request.args.get('customer_id')|string == c.customer_id|string }}>
+        {{ c.full_name }}
+      </option>
+      {% endfor %}
+    </select>
+    <label>Card Type</label>
+    <select name="card_type">
+      <option>Visa</option>
+      <option>Mastercard</option>
+      <option>Amex</option>
+    </select>
+    <label>Card Number (sensitive — will be AES encrypted)</label>
+    <input name="card_number" maxlength="19"
+           placeholder="1234 5678 9012 3456" required>
+    <label>Expiry Date (confidential — will be AES encrypted)</label>
+    <input name="expiry" maxlength="5" placeholder="MM/YY" required>
+    <label>CVV (sensitive — will be AES encrypted)</label>
+    <input name="cvv" maxlength="4" placeholder="123" required>
+    <label>Billing Address (sensitive — will be AES encrypted)</label>
+    <input name="billing" placeholder="e.g. 123 Main St, Nairobi" required>
+    <button type="submit" class="btn btn-r">🔒 Encrypt and Save Card</button>
+    <a href="/cards" class="btn" style="margin-left:8px">Cancel</a>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,12 @@
+﻿{% extends 'base.html' %}
+{% block content %}
+<div style="text-align:center;padding:60px 20px">
+  <div style="font-size:48px">⛔</div>
+  <h2 style="color:#e74c3c;margin:16px 0 8px">Access Denied</h2>
+  <p style="color:#888;margin-bottom:24px">
+    Your role <strong>({{ session.role }})</strong>
+    does not have permission to view this page.
+  </p>
+  <a href="/dashboard" class="btn">Back to Dashboard</a>
+</div>
+{% endblock %}

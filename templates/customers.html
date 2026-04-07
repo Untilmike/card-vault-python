@@ -1,0 +1,38 @@
+﻿{% extends 'base.html' %}
+{% block content %}
+<h2>👤 Customers</h2>
+<div style="margin-bottom:16px">
+  <a href="/customers/add" class="btn btn-g">+ Add Customer</a>
+</div>
+<table>
+  <tr>
+    <th>#</th><th>Full Name</th><th>Email</th>
+    <th>Phone</th><th>Cards on File</th><th>Action</th>
+  </tr>
+  {% for c in customers %}
+  <tr>
+    <td>{{ c.customer_id }}</td>
+    <td><strong>{{ c.full_name }}</strong></td>
+    <td>{{ c.email }}</td>
+    <td>{{ c.phone or '—' }}</td>
+    <td>
+      <span class="badge {{ 'b-g' if c.cards_on_file > 0 else 'b-y' }}">
+        {{ c.cards_on_file }} card{{ 's' if c.cards_on_file != 1 }}
+      </span>
+    </td>
+    <td>
+      <a href="/cards/add?customer_id={{ c.customer_id }}"
+         class="btn btn-b" style="font-size:12px;padding:5px 10px">
+         + Add Card
+      </a>
+    </td>
+  </tr>
+  {% else %}
+  <tr>
+    <td colspan="6" style="text-align:center;color:#999;padding:24px">
+      No customers yet. Add one above.
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

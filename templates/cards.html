@@ -1,0 +1,39 @@
+﻿{% extends 'base.html' %}
+{% block content %}
+<h2>💳 Card Vault
+  {% if session.role == 'admin' %}
+  <span class="badge b-r" style="font-size:12px;margin-left:8px;vertical-align:middle">
+    Admin — full decrypted view
+  </span>
+  {% else %}
+  <span class="badge b-y" style="font-size:12px;margin-left:8px;vertical-align:middle">
+    Merchant — card number masked
+  </span>
+  {% endif %}
+</h2>
+<div style="margin-bottom:16px">
+  <a href="/cards/add" class="btn btn-r">+ Add Card</a>
+</div>
+<table>
+  <tr>
+    <th>Customer</th><th>Type</th><th>Card Number</th>
+    <th>Expiry</th><th>Billing Address</th><th>Token (first 16)</th>
+  </tr>
+  {% for c in cards %}
+  <tr>
+    <td><strong>{{ c.full_name }}</strong></td>
+    <td>{{ c.card_type }}</td>
+    <td><code>{{ c.card_number }}</code></td>
+    <td>{{ c.expiry }}</td>
+    <td>{{ c.billing }}</td>
+    <td><small style="color:#888;font-family:monospace">{{ c.card_token[:16] }}…</small></td>
+  </tr>
+  {% else %}
+  <tr>
+    <td colspan="6" style="text-align:center;color:#999;padding:24px">
+      No cards stored yet.
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}
