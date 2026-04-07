@@ -1,4 +1,5 @@
 ﻿flask
-flask-mysqldb
+pymysql
 pycryptodome
 python-dotenv
+gunicorn
